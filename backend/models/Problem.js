@@ -109,9 +109,13 @@ const problemSchema = new mongoose.Schema({
   },
   notes: {
     type: String,
-    required: true,
     trim: true,
     maxLength: 250,
+  },
+  template: {
+    type: String,
+    trim: true,
+    maxLength: 10000,
   },
   solutions: {
     type: [solutionSchema],
