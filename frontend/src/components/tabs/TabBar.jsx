@@ -17,7 +17,7 @@ export default function TabBar() {
                 : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
             }`}
           >
-            <span className="truncate max-w-[150px]">{tab.title}</span>
+            <span className="truncate max-w-37.5">{tab.title}</span>
             <button
               onClick={(e) => closeTab(tab.id, e)}
               className="p-0.5 rounded-md hover:bg-slate-700 text-slate-500 hover:text-slate-200 transition-colors"

@@ -29,7 +29,7 @@ const ProblemCard = ({ problem, onClick }) => {
         <span className="text-amber-400 flex items-center gap-1">
           ⭐ {problem.stars}
         </span>
-        <span className="truncate max-w-[120px] bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800 text-[10px]">
+        <span className="truncate max-w-30 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800 text-[10px]">
           {problem.tags?.[0]?.name || problem.tags?.[0] || 'General'}
         </span>
       </div>
