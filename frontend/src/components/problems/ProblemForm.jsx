@@ -130,6 +130,42 @@ export default function ProblemForm({ initialData = null, onSuccess }) {
     }));
   };
 
+  const handleFileUpload = async (exIndex, imgIndex, e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const uploadData = new FormData();
+    uploadData.append('image', file);
+    
+    // Pass along problem ID if available
+    if (initialData?._id) {
+      uploadData.append('problemId', initialData._id);
+    } else if (formData.problem) {
+      uploadData.append('problemId', formData.problem);
+    }
+
+    try {
+      setLoading(true);
+      const response = await api.post('/uploadImage', uploadData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const { url, key } = response.data;
+
+      // Update the specific example image fields with the S3 response
+      const updated = [...formData.examples];
+      updated[exIndex].images[imgIndex] = { url, key };
+      setFormData((prev) => ({ ...prev, examples: updated }));
+    } catch (err) {
+      console.error('Image upload failed:', err);
+      setError(err.response?.data?.message || err.message || 'Failed to upload image');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // --- Submit Handler using Axios ---
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -368,7 +404,7 @@ export default function ProblemForm({ initialData = null, onSuccess }) {
             </div>
 
             {/* Images Array */}
-            <div className="space-y-2 pt-2 border-t border-slate-800/80">
+            <div className="space-y-3 pt-2 border-t border-slate-800/80">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-slate-400">Example Images</span>
                 <button
@@ -376,32 +412,57 @@ export default function ProblemForm({ initialData = null, onSuccess }) {
                   onClick={() => addImageToExample(exIndex)}
                   className="text-xs text-indigo-400 hover:underline"
                 >
-                  + Add Image
+                  + Add Image Slot
                 </button>
               </div>
+              
               {ex.images?.map((img, imgIndex) => (
-                <div key={imgIndex} className="flex gap-2 items-center">
-                  <input
-                    type="text"
-                    placeholder="Image URL"
-                    value={img.url}
-                    onChange={(e) => updateExampleImage(exIndex, imgIndex, 'url', e.target.value)}
-                    className="flex-1 bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white"
-                  />
-                  <input
-                    type="text"
-                    placeholder="S3 Key"
-                    value={img.key}
-                    onChange={(e) => updateExampleImage(exIndex, imgIndex, 'key', e.target.value)}
-                    className="w-32 bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeExampleImage(exIndex, imgIndex)}
-                    className="text-slate-500 hover:text-red-400 text-xs px-1"
-                  >
-                    ✕
-                  </button>
+                <div key={imgIndex} className="p-3 bg-slate-950 border border-slate-800 rounded-lg space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-slate-400">Image #{imgIndex + 1}</span>
+                    <button
+                      type="button"
+                      onClick={() => removeExampleImage(exIndex, imgIndex)}
+                      className="text-slate-500 hover:text-red-400 text-xs"
+                    >
+                      Remove
+                    </button>
+                  </div>
+
+                  {/* Desktop File Picker */}
+                  <div>
+                    <label className="block text-[10px] text-slate-400 mb-1">Upload from Desktop</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleFileUpload(exIndex, imgIndex, e)}
+                      className="w-full text-xs text-slate-400 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer"
+                    />
+                  </div>
+
+                  {/* Preview / Read-Only or Editable URLs */}
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <div>
+                      <label className="block text-[10px] text-slate-500 mb-0.5">S3 URL</label>
+                      <input
+                        type="text"
+                        placeholder="Auto-filled after upload"
+                        value={img.url}
+                        onChange={(e) => updateExampleImage(exIndex, imgIndex, 'url', e.target.value)}
+                        className="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] text-slate-500 mb-0.5">S3 Key</label>
+                      <input
+                        type="text"
+                        placeholder="Auto-filled after upload"
+                        value={img.key}
+                        onChange={(e) => updateExampleImage(exIndex, imgIndex, 'key', e.target.value)}
+                        className="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white"
+                      />
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
