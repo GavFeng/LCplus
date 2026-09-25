@@ -66,7 +66,7 @@ const NotesPanel = ({ isOpen, initialContent, onClose, onSave }) => {
     <div
       ref={panelRef}
       style={{ left: `${position.x}px`, top: `${position.y}px` }}
-      className="absolute w-96 max-w-full bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-4 flex flex-col space-y-3 z-50 resize overflow-auto min-h-[300px] max-h-[600px]"
+      className="absolute w-96 max-w-full bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-4 flex flex-col space-y-3 z-50 resize overflow-auto min-h-75 max-h-150"
     >
       {/* Draggable Header Bar */}
       <div
