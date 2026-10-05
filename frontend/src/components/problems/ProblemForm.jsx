@@ -304,7 +304,7 @@ export default function ProblemForm({ initialData = null, onSuccess }) {
           value={formData.description}
           onChange={handleChange}
           required
-          maxLength="500"
+          maxLength="1500"
           rows="3"
           className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500"
         />
@@ -317,7 +317,7 @@ export default function ProblemForm({ initialData = null, onSuccess }) {
           value={formData.constraints}
           onChange={handleChange}
           required
-          maxLength="500"
+          maxLength="1000"
           rows="2"
           className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500"
         />
@@ -331,7 +331,7 @@ export default function ProblemForm({ initialData = null, onSuccess }) {
           value={formData.notes}
           onChange={handleChange}
           required
-          maxLength="250"
+          maxLength="1500"
           className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500"
         />
       </div>
