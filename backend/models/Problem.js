@@ -90,7 +90,7 @@ const problemSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    maxLength: 500,
+    maxLength: 1500,
   },
   examples:{
     type: [exampleSchema],
@@ -105,12 +105,12 @@ const problemSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    maxLength: 500,
+    maxLength: 1000,
   },
   notes: {
     type: String,
     trim: true,
-    maxLength: 250,
+    maxLength: 1500,
   },
   template: {
     type: String,
