@@ -3,6 +3,7 @@ import Sidebar from '../components/layout/Sidebar';
 import TabManager from '../components/tabs/TabManager';
 import { TabProvider, useTabs } from '../context/TabContext';
 import api from '../services/api';
+import { Link } from 'react-router-dom'
 
 function HomePageLayout() {
   const { openProblem, openCreateTab } = useTabs();
@@ -31,9 +32,9 @@ function HomePageLayout() {
     <div className="h-screen bg-slate-950 text-slate-100 flex flex-col">
       <header className="h-14 border-b border-slate-800 px-4 flex items-center justify-between">
         <h1 className="font-semibold">LeetCode Notes</h1>
-        <a href="/settings" className="text-sm text-indigo-400 hover:text-indigo-300">
+        <Link to="/settings" className="text-sm text-indigo-400 hover:text-indigo-300">
           Settings
-        </a>
+        </Link>
       </header>
 
       <div className="flex flex-1 min-h-0">
